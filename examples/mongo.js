@@ -2,7 +2,7 @@
 
 // Load modules
 
-var Catbox = require('../');
+var Catbox = require('catbox');
 var Http = require('http');
 
 
@@ -56,11 +56,10 @@ internals.getResponse = function (callback) {
 internals.startCache = function (callback) {
 
     var options = {
-        engine: 'catbox-mongodb',
         partition: 'examples'
     };
 
-    internals.client = new Catbox.Client(options);
+    internals.client = new Catbox.Client(require('../'), options);      // Replace require('../') with 'catbox-mongodb' in your own code
     internals.client.start(callback);
 };
 
