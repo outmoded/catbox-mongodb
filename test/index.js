@@ -344,12 +344,27 @@ describe('Mongo', function () {
         done();
     });
 
-    it('throws an error when using a reserved partition name', function (done) {
+    it('throws an error when using a reserved partition name (admin)', function (done) {
 
         var fn = function () {
 
             var options = {
                 partition: 'admin'
+            };
+
+            var mongo = new Mongo(options);
+        };
+
+        expect(fn).to.throw(Error, 'Cache partition name cannot be "admin", "local", or "config" when using MongoDB');
+        done();
+    });
+
+    it('throws an error when using a reserved partition name (local)', function (done) {
+
+        var fn = function () {
+
+            var options = {
+                partition: 'local'
             };
 
             var mongo = new Mongo(options);
