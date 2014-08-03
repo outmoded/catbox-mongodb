@@ -1,12 +1,12 @@
 {
   "name": "catbox-mongodb",
   "description": "MongoDB adapter for catbox",
-  "version": "1.0.4",
-  "author": "Eran Hammer <eran@hueniverse.com> (http://hueniverse.com)",
+  "version": "1.0.5",
+  "author": "Eran Hammer <eran@hammer.io> (http://hueniverse.com)",
   "contributors": [
     "Wyatt Preul <wpreul@gmail.com> (http://jsgeek.com)"
   ],
-  "repository": "git://github.com/spumko/catbox-mongodb",
+  "repository": "git://github.com/hapijs/catbox-mongodb",
   "main": "index",
   "keywords": [
     "cache",
@@ -14,7 +14,7 @@
     "mongodb"
   ],
   "engines": {
-    "node": ">=0.10.22"
+    "node": ">=0.10.30"
   },
   "dependencies": {
     "mongodb": "1.x.x",
@@ -30,7 +30,7 @@
   "licenses": [
     {
       "type": "BSD",
-      "url": "http://github.com/spumko/catbox-mongodb/raw/master/LICENSE"
+      "url": "http://github.com/hapijs/catbox-mongodb/raw/master/LICENSE"
     }
   ]
 }
