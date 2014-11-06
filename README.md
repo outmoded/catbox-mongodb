@@ -3,7 +3,7 @@ catbox-mongodb
 
 MongoDB adapter for catbox
 
-Lead Maintainer: [Eran Hammer](https://github.com/hueniverse)
+Lead Maintainer: [Jarda Kotesovec](https://github.com/jardakotesovec)
 
 
 ### Options
