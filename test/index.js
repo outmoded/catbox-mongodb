@@ -1,5 +1,6 @@
 // Load modules
 
+var Code = require('code');
 var Lab = require('lab');
 var Catbox = require('catbox');
 var Mongo = require('..');
@@ -8,10 +9,12 @@ var Mongodb = require('mongodb');
 
 // Test shortcuts
 
-var expect = Lab.expect;
-var before = Lab.before;
-var describe = Lab.experiment;
-var it = Lab.test;
+var lab = exports.lab = Lab.script();
+var describe = lab.experiment;
+var it = lab.test;
+var after = lab.after;
+var before = lab.before;
+var expect = Code.expect;
 
 
 describe('Mongo', function () {
@@ -25,12 +28,30 @@ describe('Mongo', function () {
 
                 db.addUser('tester', 'secret', function (err, result) {
 
-                    expect(err).to.not.exist;
+                    expect(err).to.not.exist();
                     db.close();
                     done();
                 });
             });
         });
+    });
+
+    after(function (done) {
+
+        var db = new Mongodb.Db('unit-testing', new Mongodb.Server('127.0.0.1', 27017, { auto_reconnect: false, poolSize: 4 }), { safe: false });
+        db.open(function (err, db) {
+
+            db.dropDatabase(function (err) {
+
+                db.removeUser('tester', function (err, result) {
+
+                    expect(err).to.not.exist();
+                    db.close();
+                    done();
+                });
+            });
+        });
+
     });
 
     it('creates a new connection', function (done) {
@@ -63,7 +84,7 @@ describe('Mongo', function () {
             var key = { id: 'x', segment: 'test' };
             client.set(key, '123', 500, function (err) {
 
-                expect(err).to.not.exist;
+                expect(err).to.not.exist();
                 client.get(key, function (err, result) {
 
                     expect(err).to.equal(null);
@@ -115,12 +136,12 @@ describe('Mongo', function () {
         var client = new Catbox.Client(Mongo);
         client.start(function (err) {
 
-            expect(err).to.not.exist;
+            expect(err).to.not.exist();
             expect(client.isReady()).to.equal(true);
 
             client.start(function (err) {
 
-                expect(err).to.not.exist;
+                expect(err).to.not.exist();
                 expect(client.isReady()).to.equal(true);
                 done();
             });
@@ -149,7 +170,7 @@ describe('Mongo', function () {
             var key = { id: 'x', segment: 'test' };
             client.set(key, 'x', 1, function (err) {
 
-                expect(err).to.not.exist;
+                expect(err).to.not.exist();
                 setTimeout(function () {
 
                     client.get(key, function (err, result) {
@@ -223,7 +244,7 @@ describe('Mongo', function () {
             var key = { id: 'x', segment: 'test' };
             client.set(key, 'y', 0, function (err) {
 
-                expect(err).to.not.exist;
+                expect(err).to.not.exist();
                 done();
             });
         });
@@ -249,8 +270,8 @@ describe('Mongo', function () {
         var key = { id: 'x', segment: 'test' };
         client.connection.get(key, function (err, result) {
 
-            expect(err).to.exist;
-            expect(result).to.not.exist;
+            expect(err).to.exist();
+            expect(result).to.not.exist();
             done();
         });
     });
@@ -262,7 +283,7 @@ describe('Mongo', function () {
         var key = { id: 'x', segment: 'test' };
         client.connection.set(key, 'y', 1, function (err) {
 
-            expect(err).to.exist;
+            expect(err).to.exist();
             done();
         });
     });
@@ -274,7 +295,7 @@ describe('Mongo', function () {
         var key = { id: 'x', segment: 'test' };
         client.connection.drop(key, function (err) {
 
-            expect(err).to.exist;
+            expect(err).to.exist();
             done();
         });
     });
@@ -313,7 +334,7 @@ describe('Mongo', function () {
         client.stop();
         client.drop('a', function (err) {
 
-            expect(err).to.exist;
+            expect(err).to.exist();
             done();
         });
     });
@@ -359,7 +380,7 @@ describe('Mongo', function () {
         done();
     });
 
-    describe('#start', function () {
+    describe('start()', function () {
 
         it('returns an error when authentication fails', function (done) {
 
@@ -374,7 +395,7 @@ describe('Mongo', function () {
 
             mongo.start(function (err) {
 
-                expect(err).to.exist;
+                expect(err).to.exist();
                 expect(err).to.be.instanceOf(Error);
                 done();
             });
@@ -394,7 +415,7 @@ describe('Mongo', function () {
 
             mongo.start(function (err) {
 
-                expect(err).to.not.exist;
+                expect(err).to.not.exist();
                 done();
             });
         });
@@ -411,8 +432,8 @@ describe('Mongo', function () {
 
             mongo.start(function (err) {
 
-                expect(err).to.not.exist;
-                expect(mongo.isReady()).to.be.true;
+                expect(err).to.not.exist();
+                expect(mongo.isReady()).to.be.true();
                 done();
             });
         });
@@ -429,18 +450,18 @@ describe('Mongo', function () {
 
             mongo.start(function (err) {
 
-                expect(err).to.not.exist;
+                expect(err).to.not.exist();
             });
 
             mongo.start(function (err) {
 
-                expect(err).to.not.exist;
+                expect(err).to.not.exist();
                 done();
             });
         });
     });
 
-    describe('#validateSegmentName', function () {
+    describe('validateSegmentName()', function () {
 
         it('returns an error when the name is empty', function (done) {
 
@@ -535,12 +556,12 @@ describe('Mongo', function () {
 
             var result = mongo.validateSegmentName('hereisavalidname');
 
-            expect(result).to.not.exist;
+            expect(result).to.not.exist();
             done();
         });
     });
 
-    describe('#getCollection', function () {
+    describe('getCollection()', function () {
 
         it('passes an error to the callback when the connection is closed', function (done) {
 
@@ -554,7 +575,7 @@ describe('Mongo', function () {
 
             mongo.getCollection('test', function (err) {
 
-                expect(err).to.exist;
+                expect(err).to.exist();
                 expect(err).to.be.instanceOf(Error);
                 expect(err.message).to.equal('Connection not ready');
                 done();
@@ -575,8 +596,8 @@ describe('Mongo', function () {
 
                 mongo.getCollection('test', function (err, result) {
 
-                    expect(err).to.not.exist;
-                    expect(result).to.exist;
+                    expect(err).to.not.exist();
+                    expect(result).to.exist();
                     done();
                 });
             });
@@ -596,8 +617,8 @@ describe('Mongo', function () {
 
                 mongo.getCollection('', function (err, result) {
 
-                    expect(err).to.exist;
-                    expect(result).to.not.exist;
+                    expect(err).to.exist();
+                    expect(result).to.not.exist();
                     done();
                 });
             });
@@ -622,8 +643,8 @@ describe('Mongo', function () {
 
                 mongo.getCollection('testcollection', function (err, result) {
 
-                    expect(err).to.exist;
-                    expect(result).to.not.exist;
+                    expect(err).to.exist();
+                    expect(result).to.not.exist();
                     expect(err.message).to.equal('Received null collection object');
                     done();
                 });
@@ -631,7 +652,7 @@ describe('Mongo', function () {
         });
     });
 
-    describe('#get', function () {
+    describe('get()', function () {
 
         it('passes an error to the callback when the connection is closed', function (done) {
 
@@ -645,7 +666,7 @@ describe('Mongo', function () {
 
             mongo.get('test', function (err) {
 
-                expect(err).to.exist;
+                expect(err).to.exist();
                 expect(err).to.be.instanceOf(Error);
                 expect(err.message).to.equal('Connection not started');
                 done();
@@ -666,8 +687,8 @@ describe('Mongo', function () {
 
                 mongo.get({ segment: 'test0', id: 'test0' }, function (err, result) {
 
-                    expect(err).to.not.exist;
-                    expect(result).to.not.exist;
+                    expect(err).to.not.exist();
+                    expect(result).to.not.exist();
                     done();
                 });
             });
@@ -692,10 +713,10 @@ describe('Mongo', function () {
 
                 mongo.set(key, 'myvalue', 200, function (err) {
 
-                    expect(err).to.not.exist;
+                    expect(err).to.not.exist();
                     mongo.get(key, function (err, result) {
 
-                        expect(err).to.not.exist;
+                        expect(err).to.not.exist();
                         expect(result.item).to.equal('myvalue');
                         done();
                     });
@@ -721,8 +742,8 @@ describe('Mongo', function () {
 
                 mongo.get(key, function (err, result) {
 
-                    expect(err).to.exist;
-                    expect(result).to.not.exist;
+                    expect(err).to.exist();
+                    expect(result).to.not.exist();
                     done();
                 });
             });
@@ -753,9 +774,9 @@ describe('Mongo', function () {
 
             mongo.get(key, function (err, result) {
 
-                expect(err).to.exist;
+                expect(err).to.exist();
                 expect(err.message).to.equal('test');
-                expect(result).to.not.exist;
+                expect(result).to.not.exist();
                 done();
             });
         });
@@ -785,9 +806,9 @@ describe('Mongo', function () {
 
             mongo.get(key, function (err, result) {
 
-                expect(err).to.exist;
+                expect(err).to.exist();
                 expect(err.message).to.equal('Incorrect record structure');
-                expect(result).to.not.exist;
+                expect(result).to.not.exist();
                 done();
             });
         });
@@ -817,15 +838,15 @@ describe('Mongo', function () {
 
             mongo.get(key, function (err, result) {
 
-                expect(err).to.exist;
+                expect(err).to.exist();
                 expect(err.message).to.equal('Bad value content');
-                expect(result).to.not.exist;
+                expect(result).to.not.exist();
                 done();
             });
         });
     });
 
-    describe('#set', function () {
+    describe('set()', function () {
 
         it('passes an error to the callback when the connection is closed', function (done) {
 
@@ -839,7 +860,7 @@ describe('Mongo', function () {
 
             mongo.set({ id: 'test1', segment: 'test1' }, 'test1', 3600, function (err) {
 
-                expect(err).to.exist;
+                expect(err).to.exist();
                 expect(err).to.be.instanceOf(Error);
                 expect(err.message).to.equal('Connection not started');
                 done();
@@ -860,8 +881,8 @@ describe('Mongo', function () {
 
                 mongo.set({ id: 'test1', segment: 'test1' }, 'test1', 3600, function (err, result) {
 
-                    expect(err).to.not.exist;
-                    expect(result).to.not.exist;
+                    expect(err).to.not.exist();
+                    expect(result).to.not.exist();
                     done();
                 });
             });
@@ -890,9 +911,9 @@ describe('Mongo', function () {
 
             mongo.set(key, true, 0, function (err, result) {
 
-                expect(err).to.exist;
+                expect(err).to.exist();
                 expect(err.message).to.equal('test');
-                expect(result).to.not.exist;
+                expect(result).to.not.exist();
                 done();
             });
         });
@@ -925,15 +946,15 @@ describe('Mongo', function () {
 
             mongo.set(key, true, 0, function (err, result) {
 
-                expect(err).to.exist;
+                expect(err).to.exist();
                 expect(err.message).to.equal('test');
-                expect(result).to.not.exist;
+                expect(result).to.not.exist();
                 done();
             });
         });
     });
 
-    describe('#drop', function () {
+    describe('drop()', function () {
 
         it('passes an error to the callback when the connection is closed', function (done) {
 
@@ -947,7 +968,7 @@ describe('Mongo', function () {
 
             mongo.drop({ id: 'test2', segment: 'test2' }, function (err) {
 
-                expect(err).to.exist;
+                expect(err).to.exist();
                 expect(err).to.be.instanceOf(Error);
                 expect(err.message).to.equal('Connection not started');
                 done();
@@ -968,8 +989,8 @@ describe('Mongo', function () {
 
                 mongo.drop({ id: 'test2', segment: 'test2' }, function (err, result) {
 
-                    expect(err).to.not.exist;
-                    expect(result).to.not.exist;
+                    expect(err).to.not.exist();
+                    expect(result).to.not.exist();
                     done();
                 });
             });
@@ -998,9 +1019,9 @@ describe('Mongo', function () {
 
             mongo.drop(key, function (err, result) {
 
-                expect(err).to.exist;
+                expect(err).to.exist();
                 expect(err.message).to.equal('test');
-                expect(result).to.not.exist;
+                expect(result).to.not.exist();
                 done();
             });
         });
@@ -1033,9 +1054,9 @@ describe('Mongo', function () {
 
             mongo.drop(key, function (err, result) {
 
-                expect(err).to.exist;
+                expect(err).to.exist();
                 expect(err.message).to.equal('test');
-                expect(result).to.not.exist;
+                expect(result).to.not.exist();
                 done();
             });
         });
