@@ -76,7 +76,7 @@ describe('Mongo', function () {
         });
     });
 
-    it('gets an item after settig it', function (done) {
+    it('gets an item after setting it', function (done) {
 
         var client = new Catbox.Client(Mongo);
         client.start(function (err) {
@@ -95,6 +95,34 @@ describe('Mongo', function () {
         });
     });
 
+    it('sets/gets following JS data types: Object, Array, Number, String, Date, RegExp', function (done) {
+
+        var client = new Catbox.Client(Mongo);
+        client.start(function (err) {
+
+            var key = { id: 'x', segment: 'test' };
+            var value = {
+                object: { a: 'b'},
+                array: [1, 2, 3],
+                number: 5.85,
+                string: 'hapi',
+                date: new Date('2014-03-07'),
+                regexp: /[a-zA-Z]+/
+            };
+
+            client.set(key, value, 500, function (err) {
+
+                expect(err).to.not.exist();
+                client.get(key, function (err, result) {
+
+                    expect(err).to.equal(null);
+                    expect(result.item).to.deep.equal(value);
+                    done();
+                });
+            });
+        });
+    });
+
     it('fails setting an item circular references', function (done) {
 
         var client = new Catbox.Client(Mongo);
@@ -105,7 +133,7 @@ describe('Mongo', function () {
             value.b = value;
             client.set(key, value, 10, function (err) {
 
-                expect(err.message).to.equal('Converting circular structure to JSON');
+                expect(err).to.exist();
                 done();
             });
         });
@@ -844,37 +872,6 @@ describe('Mongo', function () {
             });
         });
 
-        it('passes an error to the callback when there is an issue parsing the record value', function (done) {
-
-            var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27018,
-                poolSize: 5
-            };
-            var key = {
-                id: 'testerr',
-                segment: 'testerr'
-            };
-            var mongo = new Mongo(options);
-            mongo.client = true;
-            mongo.isConnected = true;
-
-            mongo.collections.testerr = {
-                findOne: function (item, callback) {
-
-                    return callback(null, { value: 'test', stored: true });
-                }
-            };
-
-            mongo.get(key, function (err, result) {
-
-                expect(err).to.exist();
-                expect(err.message).to.equal('Bad value content');
-                expect(result).to.not.exist();
-                done();
-            });
-        });
     });
 
     describe('set()', function () {
