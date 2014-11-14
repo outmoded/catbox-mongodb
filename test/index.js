@@ -650,6 +650,37 @@ describe('Mongo', function () {
                 });
             });
         });
+
+        it('passes an error to the callback when ensureIndex fails', function (done) {
+
+            var options = {
+                partition: 'unit-testing',
+                host: '127.0.0.1',
+                port: 27017,
+                poolSize: 5
+            };
+            var mongo = new Mongo(options);
+
+            mongo.start(function () {
+
+                mongo.client.collection = function (item, callback) {
+
+                    return callback(null, {
+                        ensureIndex: function (fieldOrSpec, options, callback) {
+
+                            return callback(new Error('test'));
+                        }
+                    });
+                };
+
+                mongo.getCollection('testcollection', function (err, result) {
+
+                    expect(err).to.exist();
+                    expect(result).to.not.exist();
+                    done();
+                });
+            });
+        });
     });
 
     describe('get()', function () {
