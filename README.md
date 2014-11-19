@@ -7,6 +7,8 @@ MongoDB adapter for catbox
 
 Lead Maintainer: [Jarda Kotesovec](https://github.com/jardakotesovec)
 
+**catbox-mongodb** serializes values to BSON using MongoDB driver, therefore following data types are supported for this adapter: Object, Array, Number, String, Date, RegExp.
+
 
 ### Options
 
