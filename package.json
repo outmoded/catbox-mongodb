@@ -14,7 +14,7 @@
     "mongodb"
   ],
   "engines": {
-    "node": ">=0.10.30"
+    "node": ">=0.10.40"
   },
   "dependencies": {
     "mongodb": "1.x.x",
