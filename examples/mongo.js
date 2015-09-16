@@ -21,7 +21,7 @@ internals.handler = function (req, res) {
             res.end();
         }
         else {
-            res.writeHead(200, {'Content-Type': 'text/plain'});
+            res.writeHead(200, { 'Content-Type': 'text/plain' });
             res.end(item);
         }
     });
@@ -43,12 +43,10 @@ internals.getResponse = function (callback) {
         else if (cached) {
             return callback(null, 'From cache: ' + cached.item);
         }
-        else {
-            internals.client.set(key, 'my example', 5000, function (error) {
+        internals.client.set(key, 'my example', 5000, function (error) {
 
-                callback(error, 'my example');
-            });
-        }
+            callback(error, 'my example');
+        });
     });
 };
 

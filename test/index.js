@@ -3,7 +3,7 @@
 var Code = require('code');
 var Lab = require('lab');
 var Catbox = require('catbox');
-var Mongo = require('..');
+var Mongo = require('../lib');
 var Mongodb = require('mongodb');
 
 
@@ -21,8 +21,8 @@ describe('Mongo', function () {
 
     before(function (done) {
 
-        var db = new Mongodb.Db('unit-testing', new Mongodb.Server('127.0.0.1', 27017, { auto_reconnect: false, poolSize: 4 }), { safe: false });
-        db.open(function (err, db) {
+        var mongoDB = new Mongodb.Db('unit-testing', new Mongodb.Server('127.0.0.1', 27017, { auto_reconnect: false, poolSize: 4 }), { safe: false });
+        mongoDB.open(function (err, db) {
 
             db.dropDatabase(function (err) {
 
@@ -38,8 +38,8 @@ describe('Mongo', function () {
 
     after(function (done) {
 
-        var db = new Mongodb.Db('unit-testing', new Mongodb.Server('127.0.0.1', 27017, { auto_reconnect: false, poolSize: 4 }), { safe: false });
-        db.open(function (err, db) {
+        var mongoDB = new Mongodb.Db('unit-testing', new Mongodb.Server('127.0.0.1', 27017, { auto_reconnect: false, poolSize: 4 }), { safe: false });
+        mongoDB.open(function (err, db) {
 
             db.dropDatabase(function (err) {
 
@@ -102,7 +102,7 @@ describe('Mongo', function () {
 
             var key = { id: 'x', segment: 'test' };
             var value = {
-                object: { a: 'b'},
+                object: { a: 'b' },
                 array: [1, 2, 3],
                 number: 5.85,
                 string: 'hapi',
@@ -694,9 +694,9 @@ describe('Mongo', function () {
                 mongo.client.collection = function (item, callback) {
 
                     return callback(null, {
-                        ensureIndex: function (fieldOrSpec, options, callback) {
+                        ensureIndex: function (fieldOrSpec, options2, callback2) {
 
-                            return callback(new Error('test'));
+                            return callback2(new Error('test'));
                         }
                     });
                 };
@@ -965,7 +965,7 @@ describe('Mongo', function () {
             mongo.getCollection = function (item, callback) {
 
                 return callback(null, {
-                    update: function (criteria, record, options, cb) {
+                    update: function (criteria, record, options2, cb) {
 
                         return cb(new Error('test'));
                     }
