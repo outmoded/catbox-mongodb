@@ -336,7 +336,7 @@ describe('Mongo', function () {
         var fn = function () {
 
             var client = new Catbox.Client(Mongo);
-            var cache = new Catbox.Policy(config, client, '');
+            new Catbox.Policy(config, client, '');
         };
         expect(fn).to.throw(Error);
         done();
@@ -350,7 +350,7 @@ describe('Mongo', function () {
         var fn = function () {
 
             var client = new Catbox.Client(Mongo);
-            var cache = new Catbox.Policy(config, client, 'a\0b');
+            new Catbox.Policy(config, client, 'a\0b');
         };
         expect(fn).to.throw(Error);
         done();
@@ -371,7 +371,7 @@ describe('Mongo', function () {
 
         var fn = function () {
 
-            var mongo = Mongo();
+            Mongo();
         };
 
         expect(fn).to.throw(Error);
@@ -386,7 +386,7 @@ describe('Mongo', function () {
                 partition: 'admin'
             };
 
-            var mongo = new Mongo(options);
+            new Mongo(options);
         };
 
         expect(fn).to.throw(Error, 'Cache partition name cannot be "admin", "local", or "config" when using MongoDB');
@@ -401,7 +401,7 @@ describe('Mongo', function () {
                 partition: 'local'
             };
 
-            var mongo = new Mongo(options);
+            new Mongo(options);
         };
 
         expect(fn).to.throw(Error, 'Cache partition name cannot be "admin", "local", or "config" when using MongoDB');
