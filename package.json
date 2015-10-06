@@ -7,7 +7,7 @@
     "Wyatt Preul <wpreul@gmail.com> (http://jsgeek.com)"
   ],
   "repository": "git://github.com/hapijs/catbox-mongodb",
-  "main": "index",
+  "main": "lib/index.js",
   "keywords": [
     "cache",
     "catbox",
