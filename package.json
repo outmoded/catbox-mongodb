@@ -17,8 +17,8 @@
     "node": ">=0.10.40"
   },
   "dependencies": {
-    "mongodb": "1.x.x",
-    "hoek": "2.x.x"
+    "hoek": "2.x.x",
+    "mongodb": "2.x.x"
   },
   "devDependencies": {
     "catbox": "6.x.x",

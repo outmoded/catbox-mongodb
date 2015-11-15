@@ -413,12 +413,10 @@ describe('Mongo', function () {
         it('returns an error when authentication fails', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5,
-                username: 'bob'
+                uri: 'mongodb://bob:password@127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
+
             var mongo = new Mongo(options);
 
             mongo.start(function (err) {
@@ -432,12 +430,8 @@ describe('Mongo', function () {
         it('connects with authentication', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5,
-                username: 'tester',
-                password: 'secret'
+                uri: 'mongodb://tester:secret@127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var mongo = new Mongo(options);
 
@@ -451,10 +445,8 @@ describe('Mongo', function () {
         it('sets isReady to true when the connection succeeds', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var mongo = new Mongo(options);
 
@@ -469,10 +461,8 @@ describe('Mongo', function () {
         it('calls any pending callbacks waiting for a start', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var mongo = new Mongo(options);
 
@@ -494,11 +484,10 @@ describe('Mongo', function () {
         it('returns an error when the name is empty', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
+
             var mongo = new Mongo(options);
 
             var result = mongo.validateSegmentName('');
@@ -511,11 +500,10 @@ describe('Mongo', function () {
         it('returns an error when the name has a null character', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
+
             var mongo = new Mongo(options);
 
             var result = mongo.validateSegmentName('\0test');
@@ -527,11 +515,10 @@ describe('Mongo', function () {
         it('returns an error when the name starts with system.', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
+
             var mongo = new Mongo(options);
 
             var result = mongo.validateSegmentName('system.');
@@ -543,10 +530,8 @@ describe('Mongo', function () {
         it('returns an error when the name has a $ character', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var mongo = new Mongo(options);
 
@@ -559,10 +544,8 @@ describe('Mongo', function () {
         it('returns an error when the name is too long', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var mongo = new Mongo(options);
 
@@ -575,10 +558,8 @@ describe('Mongo', function () {
         it('returns null when the name is valid', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var mongo = new Mongo(options);
 
@@ -594,10 +575,8 @@ describe('Mongo', function () {
         it('passes an error to the callback when the connection is closed', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var mongo = new Mongo(options);
 
@@ -613,10 +592,8 @@ describe('Mongo', function () {
         it('passes a collection to the callback', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var mongo = new Mongo(options);
 
@@ -634,10 +611,8 @@ describe('Mongo', function () {
         it('passes an error to the callback when there is an error getting the collection', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var mongo = new Mongo(options);
 
@@ -652,46 +627,17 @@ describe('Mongo', function () {
             });
         });
 
-        it('passes an error to the callback when the collection is null', function (done) {
-
-            var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
-            };
-            var mongo = new Mongo(options);
-
-            mongo.start(function () {
-
-                mongo.client.collection = function (item, callback) {
-
-                    callback(null, null);
-                };
-
-                mongo.getCollection('testcollection', function (err, result) {
-
-                    expect(err).to.exist();
-                    expect(result).to.not.exist();
-                    expect(err.message).to.equal('Received null collection object');
-                    done();
-                });
-            });
-        });
-
         it('passes an error to the callback when ensureIndex fails', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var mongo = new Mongo(options);
 
             mongo.start(function () {
 
-                mongo.client.collection = function (item, callback) {
+                mongo.db.collection = function (item, callback) {
 
                     return callback(null, {
                         ensureIndex: function (fieldOrSpec, options2, callback2) {
@@ -716,10 +662,8 @@ describe('Mongo', function () {
         it('passes an error to the callback when the connection is closed', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var mongo = new Mongo(options);
 
@@ -735,10 +679,8 @@ describe('Mongo', function () {
         it('passes a null item to the callback when it doesn\'t exist', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var mongo = new Mongo(options);
 
@@ -756,10 +698,8 @@ describe('Mongo', function () {
         it('is able to retrieve an object thats stored when connection is started', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var key = {
                 id: 'test',
@@ -783,13 +723,11 @@ describe('Mongo', function () {
             });
         });
 
-        it('passes an error to the callback when there is an error finding the item', function (done) {
+        it('passes an error to the callback when there is no item', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27018,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27018/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var key = {
                 id: 'test',
@@ -811,17 +749,15 @@ describe('Mongo', function () {
         it('passes an error to the callback when there is an error returned from getting an item', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27018,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var key = {
                 id: 'testerr',
                 segment: 'testerr'
             };
             var mongo = new Mongo(options);
-            mongo.client = true;
+            mongo.isConnectionStarted = true;
             mongo.isConnected = true;
 
             mongo.collections.testerr = {
@@ -843,17 +779,15 @@ describe('Mongo', function () {
         it('passes an error to the callback when there is an issue with the record structure', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27018,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var key = {
                 id: 'testerr',
                 segment: 'testerr'
             };
             var mongo = new Mongo(options);
-            mongo.client = true;
+            mongo.isConnectionStarted = true;
             mongo.isConnected = true;
 
             mongo.collections.testerr = {
@@ -879,10 +813,8 @@ describe('Mongo', function () {
         it('passes an error to the callback when the connection is closed', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var mongo = new Mongo(options);
 
@@ -898,10 +830,8 @@ describe('Mongo', function () {
         it('doesn\'t return an error when the set succeeds', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var mongo = new Mongo(options);
 
@@ -919,17 +849,15 @@ describe('Mongo', function () {
         it('passes an error to the callback when there is an error returned from setting an item', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27018,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var key = {
                 id: 'testerr',
                 segment: 'testerr'
             };
             var mongo = new Mongo(options);
-            mongo.client = true;
+            mongo.isConnectionStarted = true;
             mongo.isConnected = true;
 
             mongo.getCollection = function (item, callback) {
@@ -949,17 +877,15 @@ describe('Mongo', function () {
         it('passes an error to the callback when there is an error returned from calling update', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27018,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var key = {
                 id: 'testerr',
                 segment: 'testerr'
             };
             var mongo = new Mongo(options);
-            mongo.client = true;
+            mongo.isConnectionStarted = true;
             mongo.isConnected = true;
 
             mongo.getCollection = function (item, callback) {
@@ -987,10 +913,8 @@ describe('Mongo', function () {
         it('passes an error to the callback when the connection is closed', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var mongo = new Mongo(options);
 
@@ -1006,10 +930,8 @@ describe('Mongo', function () {
         it('doesn\'t return an error when the drop succeeds', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27017,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var mongo = new Mongo(options);
 
@@ -1027,17 +949,15 @@ describe('Mongo', function () {
         it('passes an error to the callback when there is an error returned from dropping an item', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27018,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var key = {
                 id: 'testerr',
                 segment: 'testerr'
             };
             var mongo = new Mongo(options);
-            mongo.client = true;
+            mongo.isConnectionStarted = true;
             mongo.isConnected = true;
 
             mongo.getCollection = function (item, callback) {
@@ -1057,17 +977,15 @@ describe('Mongo', function () {
         it('passes an error to the callback when there is an error returned from calling remove', function (done) {
 
             var options = {
-                partition: 'unit-testing',
-                host: '127.0.0.1',
-                port: 27018,
-                poolSize: 5
+                uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
             };
             var key = {
                 id: 'testerr',
                 segment: 'testerr'
             };
             var mongo = new Mongo(options);
-            mongo.client = true;
+            mongo.isConnectionStarted = true;
             mongo.isConnected = true;
 
             mongo.getCollection = function (item, callback) {

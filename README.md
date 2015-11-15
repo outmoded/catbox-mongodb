@@ -12,10 +12,5 @@ Lead Maintainer: [Jarda Kotesovec](https://github.com/jardakotesovec)
 
 ### Options
 
-- `host` - the MongoDB server hostname. Defaults to `'127.0.0.1'`.
-- `port` - the MongoDB server port. Defaults to `27017`.
-- `username` - when the mongo server requires authentication. Defaults to no authentication.
-- `password` - the authentication password when `username` is configured.
-- `poolSize` - number of connections. Defaults to `5`.
+- `uri` - the [MongoDB URI](https://docs.mongodb.org/v3.0/reference/connection-string/). Defaults to `'mongodb://127.0.0.1:27017/?maxPoolSize=5'`.
 - `partition` - the MongoDB server database.
-
