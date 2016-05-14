@@ -1,32 +1,36 @@
+'use strict';
+
 // Load modules
 
-var Code = require('code');
-var Lab = require('lab');
-var Catbox = require('catbox');
-var Mongo = require('../lib');
-var Mongodb = require('mongodb');
+const Code = require('code');
+const Lab = require('lab');
+const Catbox = require('catbox');
+const Mongo = require('../lib');
+const Mongodb = require('mongodb');
 
 
 // Test shortcuts
 
-var lab = exports.lab = Lab.script();
-var describe = lab.experiment;
-var it = lab.test;
-var after = lab.after;
-var before = lab.before;
-var expect = Code.expect;
+const lab = exports.lab = Lab.script();
+const describe = lab.experiment;
+const it = lab.test;
+const after = lab.after;
+const before = lab.before;
+const expect = Code.expect;
 
 
-describe('Mongo', function () {
+describe('Mongo', () => {
 
-    before(function (done) {
+    before((done) => {
 
-        var mongoDB = new Mongodb.Db('unit-testing', new Mongodb.Server('127.0.0.1', 27017, { auto_reconnect: false, poolSize: 4 }), { safe: false });
-        mongoDB.open(function (err, db) {
+        const mongoDB = new Mongodb.Db('unit-testing', new Mongodb.Server('127.0.0.1', 27017, { auto_reconnect: false, poolSize: 4 }), { safe: false });
+        mongoDB.open((err, db) => {
 
-            db.dropDatabase(function (err) {
+            expect(err).to.not.exist();
+            db.dropDatabase((err) => {
 
-                db.addUser('tester', 'secret', function (err, result) {
+                expect(err).to.not.exist();
+                db.addUser('tester', 'secret', (err, result) => {
 
                     expect(err).to.not.exist();
                     db.close();
@@ -36,14 +40,16 @@ describe('Mongo', function () {
         });
     });
 
-    after(function (done) {
+    after((done) => {
 
-        var mongoDB = new Mongodb.Db('unit-testing', new Mongodb.Server('127.0.0.1', 27017, { auto_reconnect: false, poolSize: 4 }), { safe: false });
-        mongoDB.open(function (err, db) {
+        const mongoDB = new Mongodb.Db('unit-testing', new Mongodb.Server('127.0.0.1', 27017, { auto_reconnect: false, poolSize: 4 }), { safe: false });
+        mongoDB.open((err, db) => {
 
-            db.dropDatabase(function (err) {
+            expect(err).to.not.exist();
+            db.dropDatabase((err) => {
 
-                db.removeUser('tester', function (err, result) {
+                expect(err).to.not.exist();
+                db.removeUser('tester', (err, result) => {
 
                     expect(err).to.not.exist();
                     db.close();
@@ -54,21 +60,23 @@ describe('Mongo', function () {
 
     });
 
-    it('creates a new connection', function (done) {
+    it('creates a new connection', (done) => {
 
-        var client = new Catbox.Client(Mongo);
-        client.start(function (err) {
+        const client = new Catbox.Client(Mongo);
+        client.start((err) => {
 
+            expect(err).to.not.exist();
             expect(client.isReady()).to.equal(true);
             done();
         });
     });
 
-    it('closes the connection', function (done) {
+    it('closes the connection', (done) => {
 
-        var client = new Catbox.Client(Mongo);
-        client.start(function (err) {
+        const client = new Catbox.Client(Mongo);
+        client.start((err) => {
 
+            expect(err).to.not.exist();
             expect(client.isReady()).to.equal(true);
             client.stop();
             expect(client.isReady()).to.equal(false);
@@ -76,16 +84,17 @@ describe('Mongo', function () {
         });
     });
 
-    it('gets an item after setting it', function (done) {
+    it('gets an item after setting it', (done) => {
 
-        var client = new Catbox.Client(Mongo);
-        client.start(function (err) {
+        const client = new Catbox.Client(Mongo);
+        client.start((err) => {
 
-            var key = { id: 'x', segment: 'test' };
-            client.set(key, '123', 500, function (err) {
+            expect(err).to.not.exist();
+            const key = { id: 'x', segment: 'test' };
+            client.set(key, '123', 500, (err) => {
 
                 expect(err).to.not.exist();
-                client.get(key, function (err, result) {
+                client.get(key, (err, result) => {
 
                     expect(err).to.equal(null);
                     expect(result.item).to.equal('123');
@@ -95,13 +104,14 @@ describe('Mongo', function () {
         });
     });
 
-    it('sets/gets following JS data types: Object, Array, Number, String, Date, RegExp', function (done) {
+    it('sets/gets following JS data types: Object, Array, Number, String, Date, RegExp', (done) => {
 
-        var client = new Catbox.Client(Mongo);
-        client.start(function (err) {
+        const client = new Catbox.Client(Mongo);
+        client.start((err) => {
 
-            var key = { id: 'x', segment: 'test' };
-            var value = {
+            expect(err).to.not.exist();
+            const key = { id: 'x', segment: 'test' };
+            const value = {
                 object: { a: 'b' },
                 array: [1, 2, 3],
                 number: 5.85,
@@ -110,10 +120,10 @@ describe('Mongo', function () {
                 regexp: /[a-zA-Z]+/
             };
 
-            client.set(key, value, 500, function (err) {
+            client.set(key, value, 500, (err) => {
 
                 expect(err).to.not.exist();
-                client.get(key, function (err, result) {
+                client.get(key, (err, result) => {
 
                     expect(err).to.equal(null);
                     expect(result.item).to.deep.equal(value);
@@ -123,15 +133,16 @@ describe('Mongo', function () {
         });
     });
 
-    it('fails setting an item circular references', function (done) {
+    it('fails setting an item circular references', (done) => {
 
-        var client = new Catbox.Client(Mongo);
-        client.start(function (err) {
+        const client = new Catbox.Client(Mongo);
+        client.start((err) => {
 
-            var key = { id: 'x', segment: 'test' };
-            var value = { a: 1 };
+            expect(err).to.not.exist();
+            const key = { id: 'x', segment: 'test' };
+            const value = { a: 1 };
             value.b = value;
-            client.set(key, value, 10, function (err) {
+            client.set(key, value, 10, (err) => {
 
                 expect(err).to.exist();
                 done();
@@ -139,14 +150,15 @@ describe('Mongo', function () {
         });
     });
 
-    it('ignored starting a connection twice on same event', function (done) {
+    it('ignored starting a connection twice on same event', (done) => {
 
-        var client = new Catbox.Client(Mongo);
-        var x = 2;
-        var start = function () {
+        const client = new Catbox.Client(Mongo);
+        let x = 2;
+        const start = function () {
 
-            client.start(function (err) {
+            client.start((err) => {
 
+                expect(err).to.not.exist();
                 expect(client.isReady()).to.equal(true);
                 --x;
                 if (!x) {
@@ -159,15 +171,15 @@ describe('Mongo', function () {
         start();
     });
 
-    it('ignored starting a connection twice chained', function (done) {
+    it('ignored starting a connection twice chained', (done) => {
 
-        var client = new Catbox.Client(Mongo);
-        client.start(function (err) {
+        const client = new Catbox.Client(Mongo);
+        client.start((err) => {
 
             expect(err).to.not.exist();
             expect(client.isReady()).to.equal(true);
 
-            client.start(function (err) {
+            client.start((err) => {
 
                 expect(err).to.not.exist();
                 expect(client.isReady()).to.equal(true);
@@ -176,12 +188,13 @@ describe('Mongo', function () {
         });
     });
 
-    it('returns not found on get when using null key', function (done) {
+    it('returns not found on get when using null key', (done) => {
 
-        var client = new Catbox.Client(Mongo);
-        client.start(function (err) {
+        const client = new Catbox.Client(Mongo);
+        client.start((err) => {
 
-            client.get(null, function (err, result) {
+            expect(err).to.not.exist();
+            client.get(null, (err, result) => {
 
                 expect(err).to.equal(null);
                 expect(result).to.equal(null);
@@ -190,18 +203,19 @@ describe('Mongo', function () {
         });
     });
 
-    it('returns not found on get when item expired', function (done) {
+    it('returns not found on get when item expired', (done) => {
 
-        var client = new Catbox.Client(Mongo);
-        client.start(function (err) {
+        const client = new Catbox.Client(Mongo);
+        client.start((err) => {
 
-            var key = { id: 'x', segment: 'test' };
-            client.set(key, 'x', 1, function (err) {
+            expect(err).to.not.exist();
+            const key = { id: 'x', segment: 'test' };
+            client.set(key, 'x', 1, (err) => {
 
                 expect(err).to.not.exist();
-                setTimeout(function () {
+                setTimeout(() => {
 
-                    client.get(key, function (err, result) {
+                    client.get(key, (err, result) => {
 
                         expect(err).to.equal(null);
                         expect(result).to.equal(null);
@@ -212,25 +226,13 @@ describe('Mongo', function () {
         });
     });
 
-    it('returns error on set when using null key', function (done) {
+    it('returns error on set when using null key', (done) => {
 
-        var client = new Catbox.Client(Mongo);
-        client.start(function (err) {
+        const client = new Catbox.Client(Mongo);
+        client.start((err) => {
 
-            client.set(null, {}, 1000, function (err) {
-
-                expect(err instanceof Error).to.equal(true);
-                done();
-            });
-        });
-    });
-
-    it('returns error on get when using invalid key', function (done) {
-
-        var client = new Catbox.Client(Mongo);
-        client.start(function (err) {
-
-            client.get({}, function (err) {
+            expect(err).to.not.exist();
+            client.set(null, {}, 1000, (err) => {
 
                 expect(err instanceof Error).to.equal(true);
                 done();
@@ -238,25 +240,13 @@ describe('Mongo', function () {
         });
     });
 
-    it('returns error on drop when using invalid key', function (done) {
+    it('returns error on get when using invalid key', (done) => {
 
-        var client = new Catbox.Client(Mongo);
-        client.start(function (err) {
+        const client = new Catbox.Client(Mongo);
+        client.start((err) => {
 
-            client.drop({}, function (err) {
-
-                expect(err instanceof Error).to.equal(true);
-                done();
-            });
-        });
-    });
-
-    it('returns error on set when using invalid key', function (done) {
-
-        var client = new Catbox.Client(Mongo);
-        client.start(function (err) {
-
-            client.set({}, {}, 1000, function (err) {
+            expect(err).to.not.exist();
+            client.get({}, (err) => {
 
                 expect(err instanceof Error).to.equal(true);
                 done();
@@ -264,13 +254,42 @@ describe('Mongo', function () {
         });
     });
 
-    it('ignores set when using non-positive ttl value', function (done) {
+    it('returns error on drop when using invalid key', (done) => {
 
-        var client = new Catbox.Client(Mongo);
-        client.start(function (err) {
+        const client = new Catbox.Client(Mongo);
+        client.start((err) => {
 
-            var key = { id: 'x', segment: 'test' };
-            client.set(key, 'y', 0, function (err) {
+            expect(err).to.not.exist();
+            client.drop({}, (err) => {
+
+                expect(err instanceof Error).to.equal(true);
+                done();
+            });
+        });
+    });
+
+    it('returns error on set when using invalid key', (done) => {
+
+        const client = new Catbox.Client(Mongo);
+        client.start((err) => {
+
+            expect(err).to.not.exist();
+            client.set({}, {}, 1000, (err) => {
+
+                expect(err instanceof Error).to.equal(true);
+                done();
+            });
+        });
+    });
+
+    it('ignores set when using non-positive ttl value', (done) => {
+
+        const client = new Catbox.Client(Mongo);
+        client.start((err) => {
+
+            expect(err).to.not.exist();
+            const key = { id: 'x', segment: 'test' };
+            client.set(key, 'y', 0, (err) => {
 
                 expect(err).to.not.exist();
                 done();
@@ -278,12 +297,13 @@ describe('Mongo', function () {
         });
     });
 
-    it('returns error on drop when using null key', function (done) {
+    it('returns error on drop when using null key', (done) => {
 
-        var client = new Catbox.Client(Mongo);
-        client.start(function (err) {
+        const client = new Catbox.Client(Mongo);
+        client.start((err) => {
 
-            client.drop(null, function (err) {
+            expect(err).to.not.exist();
+            client.drop(null, (err) => {
 
                 expect(err instanceof Error).to.equal(true);
                 done();
@@ -291,12 +311,12 @@ describe('Mongo', function () {
         });
     });
 
-    it('returns error on get when stopped', function (done) {
+    it('returns error on get when stopped', (done) => {
 
-        var client = new Catbox.Client(Mongo);
+        const client = new Catbox.Client(Mongo);
         client.stop();
-        var key = { id: 'x', segment: 'test' };
-        client.connection.get(key, function (err, result) {
+        const key = { id: 'x', segment: 'test' };
+        client.connection.get(key, (err, result) => {
 
             expect(err).to.exist();
             expect(result).to.not.exist();
@@ -304,72 +324,72 @@ describe('Mongo', function () {
         });
     });
 
-    it('returns error on set when stopped', function (done) {
+    it('returns error on set when stopped', (done) => {
 
-        var client = new Catbox.Client(Mongo);
+        const client = new Catbox.Client(Mongo);
         client.stop();
-        var key = { id: 'x', segment: 'test' };
-        client.connection.set(key, 'y', 1, function (err) {
+        const key = { id: 'x', segment: 'test' };
+        client.connection.set(key, 'y', 1, (err) => {
 
             expect(err).to.exist();
             done();
         });
     });
 
-    it('returns error on drop when stopped', function (done) {
+    it('returns error on drop when stopped', (done) => {
 
-        var client = new Catbox.Client(Mongo);
+        const client = new Catbox.Client(Mongo);
         client.stop();
-        var key = { id: 'x', segment: 'test' };
-        client.connection.drop(key, function (err) {
+        const key = { id: 'x', segment: 'test' };
+        client.connection.drop(key, (err) => {
 
             expect(err).to.exist();
             done();
         });
     });
 
-    it('returns error on missing segment name', function (done) {
+    it('returns error on missing segment name', (done) => {
 
-        var config = {
+        const config = {
             expiresIn: 50000
         };
-        var fn = function () {
+        const fn = () => {
 
-            var client = new Catbox.Client(Mongo);
+            const client = new Catbox.Client(Mongo);
             new Catbox.Policy(config, client, '');
         };
         expect(fn).to.throw(Error);
         done();
     });
 
-    it('returns error on bad segment name', function (done) {
+    it('returns error on bad segment name', (done) => {
 
-        var config = {
+        const config = {
             expiresIn: 50000
         };
-        var fn = function () {
+        const fn = () => {
 
-            var client = new Catbox.Client(Mongo);
+            const client = new Catbox.Client(Mongo);
             new Catbox.Policy(config, client, 'a\0b');
         };
         expect(fn).to.throw(Error);
         done();
     });
 
-    it('returns error when cache item dropped while stopped', function (done) {
+    it('returns error when cache item dropped while stopped', (done) => {
 
-        var client = new Catbox.Client(Mongo);
+        const client = new Catbox.Client(Mongo);
         client.stop();
-        client.drop('a', function (err) {
+        client.drop('a', (err) => {
 
             expect(err).to.exist();
             done();
         });
     });
 
-    it('throws an error if not created with new', function (done) {
+    it('throws an error if not created with new', (done) => {
 
-        var fn = function () {
+        const fn = () => {
 
             Mongo();
         };
@@ -378,11 +398,11 @@ describe('Mongo', function () {
         done();
     });
 
-    it('throws an error when using a reserved partition name (admin)', function (done) {
+    it('throws an error when using a reserved partition name (admin)', (done) => {
 
-        var fn = function () {
+        const fn = () => {
 
-            var options = {
+            const options = {
                 partition: 'admin'
             };
 
@@ -393,11 +413,11 @@ describe('Mongo', function () {
         done();
     });
 
-    it('throws an error when using a reserved partition name (local)', function (done) {
+    it('throws an error when using a reserved partition name (local)', (done) => {
 
-        var fn = function () {
+        const fn = () => {
 
-            var options = {
+            const options = {
                 partition: 'local'
             };
 
@@ -408,18 +428,18 @@ describe('Mongo', function () {
         done();
     });
 
-    describe('start()', function () {
+    describe('start()', () => {
 
-        it('returns an error when authentication fails', function (done) {
+        it('returns an error when authentication fails', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://bob:password@127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
 
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            mongo.start(function (err) {
+            mongo.start((err) => {
 
                 expect(err).to.exist();
                 expect(err).to.be.instanceOf(Error);
@@ -427,30 +447,30 @@ describe('Mongo', function () {
             });
         });
 
-        it('connects with authentication', function (done) {
+        it('connects with authentication', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://tester:secret@127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            mongo.start(function (err) {
+            mongo.start((err) => {
 
                 expect(err).to.not.exist();
                 done();
             });
         });
 
-        it('sets isReady to true when the connection succeeds', function (done) {
+        it('sets isReady to true when the connection succeeds', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            mongo.start(function (err) {
+            mongo.start((err) => {
 
                 expect(err).to.not.exist();
                 expect(mongo.isReady()).to.be.true();
@@ -458,20 +478,20 @@ describe('Mongo', function () {
             });
         });
 
-        it('calls any pending callbacks waiting for a start', function (done) {
+        it('calls any pending callbacks waiting for a start', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            mongo.start(function (err) {
+            mongo.start((err) => {
 
                 expect(err).to.not.exist();
             });
 
-            mongo.start(function (err) {
+            mongo.start((err) => {
 
                 expect(err).to.not.exist();
                 done();
@@ -479,108 +499,108 @@ describe('Mongo', function () {
         });
     });
 
-    describe('validateSegmentName()', function () {
+    describe('validateSegmentName()', () => {
 
-        it('returns an error when the name is empty', function (done) {
+        it('returns an error when the name is empty', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
 
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            var result = mongo.validateSegmentName('');
+            const result = mongo.validateSegmentName('');
 
             expect(result).to.be.instanceOf(Error);
             expect(result.message).to.equal('Empty string');
             done();
         });
 
-        it('returns an error when the name has a null character', function (done) {
+        it('returns an error when the name has a null character', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
 
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            var result = mongo.validateSegmentName('\0test');
+            const result = mongo.validateSegmentName('\0test');
 
             expect(result).to.be.instanceOf(Error);
             done();
         });
 
-        it('returns an error when the name starts with system.', function (done) {
+        it('returns an error when the name starts with system.', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
 
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            var result = mongo.validateSegmentName('system.');
+            const result = mongo.validateSegmentName('system.');
 
             expect(result).to.be.instanceOf(Error);
             done();
         });
 
-        it('returns an error when the name has a $ character', function (done) {
+        it('returns an error when the name has a $ character', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            var result = mongo.validateSegmentName('te$t');
+            const result = mongo.validateSegmentName('te$t');
 
             expect(result).to.be.instanceOf(Error);
             done();
         });
 
-        it('returns an error when the name is too long', function (done) {
+        it('returns an error when the name is too long', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            var result = mongo.validateSegmentName('0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789');
+            const result = mongo.validateSegmentName('0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789');
 
             expect(result).to.be.instanceOf(Error);
             done();
         });
 
-        it('returns null when the name is valid', function (done) {
+        it('returns null when the name is valid', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            var result = mongo.validateSegmentName('hereisavalidname');
+            const result = mongo.validateSegmentName('hereisavalidname');
 
             expect(result).to.not.exist();
             done();
         });
     });
 
-    describe('getCollection()', function () {
+    describe('getCollection()', () => {
 
-        it('passes an error to the callback when the connection is closed', function (done) {
+        it('passes an error to the callback when the connection is closed', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            mongo.getCollection('test', function (err) {
+            mongo.getCollection('test', (err) => {
 
                 expect(err).to.exist();
                 expect(err).to.be.instanceOf(Error);
@@ -589,17 +609,17 @@ describe('Mongo', function () {
             });
         });
 
-        it('passes a collection to the callback', function (done) {
+        it('passes a collection to the callback', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            mongo.start(function () {
+            mongo.start(() => {
 
-                mongo.getCollection('test', function (err, result) {
+                mongo.getCollection('test', (err, result) => {
 
                     expect(err).to.not.exist();
                     expect(result).to.exist();
@@ -608,17 +628,17 @@ describe('Mongo', function () {
             });
         });
 
-        it('passes an error to the callback when there is an error getting the collection', function (done) {
+        it('passes an error to the callback when there is an error getting the collection', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            mongo.start(function () {
+            mongo.start(() => {
 
-                mongo.getCollection('', function (err, result) {
+                mongo.getCollection('', (err, result) => {
 
                     expect(err).to.exist();
                     expect(result).to.not.exist();
@@ -627,15 +647,15 @@ describe('Mongo', function () {
             });
         });
 
-        it('passes an error to the callback when ensureIndex fails', function (done) {
+        it('passes an error to the callback when ensureIndex fails', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            mongo.start(function () {
+            mongo.start(() => {
 
                 mongo.db.collection = function (item, callback) {
 
@@ -647,7 +667,7 @@ describe('Mongo', function () {
                     });
                 };
 
-                mongo.getCollection('testcollection', function (err, result) {
+                mongo.getCollection('testcollection', (err, result) => {
 
                     expect(err).to.exist();
                     expect(result).to.not.exist();
@@ -657,17 +677,17 @@ describe('Mongo', function () {
         });
     });
 
-    describe('get()', function () {
+    describe('get()', () => {
 
-        it('passes an error to the callback when the connection is closed', function (done) {
+        it('passes an error to the callback when the connection is closed', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            mongo.get('test', function (err) {
+            mongo.get('test', (err) => {
 
                 expect(err).to.exist();
                 expect(err).to.be.instanceOf(Error);
@@ -676,17 +696,17 @@ describe('Mongo', function () {
             });
         });
 
-        it('passes a null item to the callback when it doesn\'t exist', function (done) {
+        it('passes a null item to the callback when it doesn\'t exist', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            mongo.start(function () {
+            mongo.start(() => {
 
-                mongo.get({ segment: 'test0', id: 'test0' }, function (err, result) {
+                mongo.get({ segment: 'test0', id: 'test0' }, (err, result) => {
 
                     expect(err).to.not.exist();
                     expect(result).to.not.exist();
@@ -695,25 +715,25 @@ describe('Mongo', function () {
             });
         });
 
-        it('is able to retrieve an object thats stored when connection is started', function (done) {
+        it('is able to retrieve an object thats stored when connection is started', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var key = {
+            const key = {
                 id: 'test',
                 segment: 'test'
             };
 
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            mongo.start(function () {
+            mongo.start(() => {
 
-                mongo.set(key, 'myvalue', 200, function (err) {
+                mongo.set(key, 'myvalue', 200, (err) => {
 
                     expect(err).to.not.exist();
-                    mongo.get(key, function (err, result) {
+                    mongo.get(key, (err, result) => {
 
                         expect(err).to.not.exist();
                         expect(result.item).to.equal('myvalue');
@@ -723,21 +743,21 @@ describe('Mongo', function () {
             });
         });
 
-        it('passes an error to the callback when there is no item', function (done) {
+        it('passes an error to the callback when there is no item', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27018/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var key = {
+            const key = {
                 id: 'test',
                 segment: 'test'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            mongo.start(function () {
+            mongo.start(() => {
 
-                mongo.get(key, function (err, result) {
+                mongo.get(key, (err, result) => {
 
                     expect(err).to.exist();
                     expect(result).to.not.exist();
@@ -746,17 +766,17 @@ describe('Mongo', function () {
             });
         });
 
-        it('passes an error to the callback when there is an error returned from getting an item', function (done) {
+        it('passes an error to the callback when there is an error returned from getting an item', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var key = {
+            const key = {
                 id: 'testerr',
                 segment: 'testerr'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
             mongo.isConnectionStarted = true;
             mongo.isConnected = true;
 
@@ -767,7 +787,7 @@ describe('Mongo', function () {
                 }
             };
 
-            mongo.get(key, function (err, result) {
+            mongo.get(key, (err, result) => {
 
                 expect(err).to.exist();
                 expect(err.message).to.equal('test');
@@ -776,17 +796,17 @@ describe('Mongo', function () {
             });
         });
 
-        it('passes an error to the callback when there is an issue with the record structure', function (done) {
+        it('passes an error to the callback when there is an issue with the record structure', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var key = {
+            const key = {
                 id: 'testerr',
                 segment: 'testerr'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
             mongo.isConnectionStarted = true;
             mongo.isConnected = true;
 
@@ -797,7 +817,7 @@ describe('Mongo', function () {
                 }
             };
 
-            mongo.get(key, function (err, result) {
+            mongo.get(key, (err, result) => {
 
                 expect(err).to.exist();
                 expect(err.message).to.equal('Incorrect record structure');
@@ -808,17 +828,17 @@ describe('Mongo', function () {
 
     });
 
-    describe('set()', function () {
+    describe('set()', () => {
 
-        it('passes an error to the callback when the connection is closed', function (done) {
+        it('passes an error to the callback when the connection is closed', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            mongo.set({ id: 'test1', segment: 'test1' }, 'test1', 3600, function (err) {
+            mongo.set({ id: 'test1', segment: 'test1' }, 'test1', 3600, (err) => {
 
                 expect(err).to.exist();
                 expect(err).to.be.instanceOf(Error);
@@ -827,17 +847,17 @@ describe('Mongo', function () {
             });
         });
 
-        it('doesn\'t return an error when the set succeeds', function (done) {
+        it('doesn\'t return an error when the set succeeds', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            mongo.start(function () {
+            mongo.start(() => {
 
-                mongo.set({ id: 'test1', segment: 'test1' }, 'test1', 3600, function (err, result) {
+                mongo.set({ id: 'test1', segment: 'test1' }, 'test1', 3600, (err, result) => {
 
                     expect(err).to.not.exist();
                     expect(result).to.not.exist();
@@ -846,26 +866,26 @@ describe('Mongo', function () {
             });
         });
 
-        it('passes an error to the callback when there is an error returned from setting an item', function (done) {
+        it('passes an error to the callback when there is an error returned from setting an item', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var key = {
+            const key = {
                 id: 'testerr',
                 segment: 'testerr'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
             mongo.isConnectionStarted = true;
             mongo.isConnected = true;
 
-            mongo.getCollection = function (item, callback) {
+            mongo.getCollection = (item, callback) => {
 
                 return callback(new Error('test'));
             };
 
-            mongo.set(key, true, 0, function (err, result) {
+            mongo.set(key, true, 0, (err, result) => {
 
                 expect(err).to.exist();
                 expect(err.message).to.equal('test');
@@ -874,21 +894,21 @@ describe('Mongo', function () {
             });
         });
 
-        it('passes an error to the callback when there is an error returned from calling update', function (done) {
+        it('passes an error to the callback when there is an error returned from calling update', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var key = {
+            const key = {
                 id: 'testerr',
                 segment: 'testerr'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
             mongo.isConnectionStarted = true;
             mongo.isConnected = true;
 
-            mongo.getCollection = function (item, callback) {
+            mongo.getCollection = (item, callback) => {
 
                 return callback(null, {
                     update: function (criteria, record, options2, cb) {
@@ -898,7 +918,7 @@ describe('Mongo', function () {
                 });
             };
 
-            mongo.set(key, true, 0, function (err, result) {
+            mongo.set(key, true, 0, (err, result) => {
 
                 expect(err).to.exist();
                 expect(err.message).to.equal('test');
@@ -908,17 +928,17 @@ describe('Mongo', function () {
         });
     });
 
-    describe('drop()', function () {
+    describe('drop()', () => {
 
-        it('passes an error to the callback when the connection is closed', function (done) {
+        it('passes an error to the callback when the connection is closed', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            mongo.drop({ id: 'test2', segment: 'test2' }, function (err) {
+            mongo.drop({ id: 'test2', segment: 'test2' }, (err) => {
 
                 expect(err).to.exist();
                 expect(err).to.be.instanceOf(Error);
@@ -927,17 +947,17 @@ describe('Mongo', function () {
             });
         });
 
-        it('doesn\'t return an error when the drop succeeds', function (done) {
+        it('doesn\'t return an error when the drop succeeds', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
 
-            mongo.start(function () {
+            mongo.start(() => {
 
-                mongo.drop({ id: 'test2', segment: 'test2' }, function (err, result) {
+                mongo.drop({ id: 'test2', segment: 'test2' }, (err, result) => {
 
                     expect(err).to.not.exist();
                     expect(result).to.not.exist();
@@ -946,17 +966,17 @@ describe('Mongo', function () {
             });
         });
 
-        it('passes an error to the callback when there is an error returned from dropping an item', function (done) {
+        it('passes an error to the callback when there is an error returned from dropping an item', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var key = {
+            const key = {
                 id: 'testerr',
                 segment: 'testerr'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
             mongo.isConnectionStarted = true;
             mongo.isConnected = true;
 
@@ -965,7 +985,7 @@ describe('Mongo', function () {
                 return callback(new Error('test'));
             };
 
-            mongo.drop(key, function (err, result) {
+            mongo.drop(key, (err, result) => {
 
                 expect(err).to.exist();
                 expect(err.message).to.equal('test');
@@ -974,17 +994,17 @@ describe('Mongo', function () {
             });
         });
 
-        it('passes an error to the callback when there is an error returned from calling remove', function (done) {
+        it('passes an error to the callback when there is an error returned from calling remove', (done) => {
 
-            var options = {
+            const options = {
                 uri: 'mongodb://127.0.0.1:27017/?maxPoolSize=5',
                 partition: 'unit-testing'
             };
-            var key = {
+            const key = {
                 id: 'testerr',
                 segment: 'testerr'
             };
-            var mongo = new Mongo(options);
+            const mongo = new Mongo(options);
             mongo.isConnectionStarted = true;
             mongo.isConnected = true;
 
@@ -998,7 +1018,7 @@ describe('Mongo', function () {
                 });
             };
 
-            mongo.drop(key, function (err, result) {
+            mongo.drop(key, (err, result) => {
 
                 expect(err).to.exist();
                 expect(err.message).to.equal('test');

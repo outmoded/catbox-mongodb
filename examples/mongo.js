@@ -1,20 +1,22 @@
+'use strict';
+
 // After starting this example load http://localhost:8080 and hit refresh, you will notice that it loads the response from cache for the first 5 seconds and then reloads the cache
 
 // Load modules
 
-var Catbox = require('catbox');
-var Http = require('http');
+const Catbox = require('catbox');
+const Http = require('http');
 
 
 
 // Declare internals
 
-var internals = {};
+const internals = {};
 
 
 internals.handler = function (req, res) {
 
-    internals.getResponse(function (err, item) {
+    internals.getResponse((err, item) => {
 
         if (err) {
             res.writeHead(500);
@@ -30,12 +32,12 @@ internals.handler = function (req, res) {
 
 internals.getResponse = function (callback) {
 
-    var key = {
+    const key = {
         segment: 'example',
         id: 'myExample'
     };
 
-    internals.client.get(key, function (err, cached) {
+    internals.client.get(key, (err, cached) => {
 
         if (err) {
             return callback(err);
@@ -43,7 +45,7 @@ internals.getResponse = function (callback) {
         else if (cached) {
             return callback(null, 'From cache: ' + cached.item);
         }
-        internals.client.set(key, 'my example', 5000, function (error) {
+        internals.client.set(key, 'my example', 5000, (error) => {
 
             callback(error, 'my example');
         });
@@ -53,7 +55,7 @@ internals.getResponse = function (callback) {
 
 internals.startCache = function (callback) {
 
-    var options = {
+    const options = {
         partition: 'examples'
     };
 
@@ -64,7 +66,7 @@ internals.startCache = function (callback) {
 
 internals.startServer = function () {
 
-    var server = Http.createServer(internals.handler);
+    const server = Http.createServer(internals.handler);
     server.listen(8080);
     console.log('Server started at http://localhost:8080/');
 };
