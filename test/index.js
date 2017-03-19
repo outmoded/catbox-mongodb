@@ -428,6 +428,130 @@ describe('Mongo', () => {
         done();
     });
 
+    describe('getSettings', () => {
+
+        it('parse single host connection string without db', (done) => {
+
+            const options = {
+                uri: 'mongodb://bob:password@127.0.0.1:27017',
+                partition: 'unit-testing'
+            };
+
+            const mongo = new Mongo(options);
+            const settings = mongo.getSettings(options);
+
+            expect(settings.uri).to.equal('mongodb://bob:password@127.0.0.1:27017/unit-testing');
+
+            done();
+        });
+
+        it('parse single host connection string without db with slash', (done) => {
+
+            const options = {
+                uri: 'mongodb://bob:password@127.0.0.1:27017/',
+                partition: 'unit-testing'
+            };
+
+            const mongo = new Mongo(options);
+            const settings = mongo.getSettings(options);
+
+            expect(settings.uri).to.equal('mongodb://bob:password@127.0.0.1:27017/unit-testing');
+
+            done();
+        });
+
+        it('parse single host connection string with credentials', (done) => {
+
+            const options = {
+                uri: 'mongodb://bob:password@127.0.0.1:27017/?maxPoolSize=5',
+                partition: 'unit-testing'
+            };
+
+            const mongo = new Mongo(options);
+            const settings = mongo.getSettings(options);
+
+            expect(settings.uri).to.equal('mongodb://bob:password@127.0.0.1:27017/unit-testing?maxPoolSize=5');
+
+            done();
+        });
+
+        it('parse single host connection string without credentials', (done) => {
+
+            const options = {
+                uri: 'mongodb://127.0.0.1:27017/test?maxPoolSize=5',
+                partition: 'unit-testing'
+            };
+
+            const mongo = new Mongo(options);
+            const settings = mongo.getSettings(options);
+
+            expect(settings.uri).to.equal('mongodb://127.0.0.1:27017/unit-testing?maxPoolSize=5');
+
+            done();
+        });
+
+        it('parse replica set in connection string without database', (done) => {
+
+            const options = {
+                uri: 'mongodb://bob:password@127.0.0.1:27017,127.0.0.2:27017,127.0.0.3:27017',
+                partition: 'unit-testing'
+            };
+
+            const mongo = new Mongo(options);
+            const settings = mongo.getSettings(options);
+
+            expect(settings.uri).to.equal('mongodb://bob:password@127.0.0.1:27017,127.0.0.2:27017,127.0.0.3:27017/unit-testing');
+
+            done();
+        });
+
+        it('parse replica set in connection string without database 2', (done) => {
+
+            const options = {
+                uri: 'mongodb://bob:password@127.0.0.1:27017,127.0.0.2:27017,127.0.0.3:27017/',
+                partition: 'unit-testing'
+            };
+
+            const mongo = new Mongo(options);
+            const settings = mongo.getSettings(options);
+
+            expect(settings.uri).to.equal('mongodb://bob:password@127.0.0.1:27017,127.0.0.2:27017,127.0.0.3:27017/unit-testing');
+
+            done();
+        });
+
+        it('parse replica set in connection string with database', (done) => {
+
+            const options = {
+                uri: 'mongodb://bob:password@127.0.0.1:27017,127.0.0.2:27017,127.0.0.3:27017/test',
+                partition: 'unit-testing'
+            };
+
+            const mongo = new Mongo(options);
+            const settings = mongo.getSettings(options);
+
+            expect(settings.uri).to.equal('mongodb://bob:password@127.0.0.1:27017,127.0.0.2:27017,127.0.0.3:27017/unit-testing');
+
+            done();
+        });
+
+        it('parse replica set in connection string', (done) => {
+
+            const options = {
+                uri: 'mongodb://bob:password@127.0.0.1:27017,127.0.0.2:27017,127.0.0.3:27017/?maxPoolSize=5&replicaSet=rs',
+                partition: 'unit-testing'
+            };
+
+            const mongo = new Mongo(options);
+            const settings = mongo.getSettings(options);
+
+            expect(settings.uri).to.equal('mongodb://bob:password@127.0.0.1:27017,127.0.0.2:27017,127.0.0.3:27017/unit-testing?maxPoolSize=5&replicaSet=rs');
+
+            done();
+        });
+
+    });
+
     describe('start()', () => {
 
         it('returns an error when authentication fails', (done) => {
