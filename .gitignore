@@ -16,3 +16,6 @@ config.json
 coverage.*
 lib-cov
 .vscode
+
+# ignore NPM's package-lock.json
+package-lock.json
