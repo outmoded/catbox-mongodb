@@ -14,62 +14,60 @@ const Http = require('http');
 const internals = {};
 
 
-internals.handler = function (req, res) {
+internals.handler = async (req, res) => {
 
-    internals.getResponse((err, item) => {
-
-        if (err) {
-            res.writeHead(500);
-            res.end();
-        }
-        else {
-            res.writeHead(200, { 'Content-Type': 'text/plain' });
-            res.end(item);
-        }
-    });
+    try {
+        const item = await internals.getResponse();
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end(item);
+    }
+    catch (ignored) {
+        res.writeHead(500);
+        res.end();
+    }
 };
 
 
-internals.getResponse = function (callback) {
+internals.getResponse = async () => {
 
     const key = {
         segment: 'example',
         id: 'myExample'
     };
 
-    internals.client.get(key, (err, cached) => {
+    const cached = await internals.client.get(key);
 
-        if (err) {
-            return callback(err);
-        }
-        else if (cached) {
-            return callback(null, 'From cache: ' + cached.item);
-        }
-        internals.client.set(key, 'my example', 5000, (error) => {
+    if (cached) {
+        return `From cache: ${cached.item}`;
+    }
 
-            callback(error, 'my example');
-        });
-    });
+    await internals.client.set(key, 'my example', 5000);
+    return 'my example';
 };
 
 
-internals.startCache = function (callback) {
+internals.startCache = async () => {
 
     const options = {
         partition: 'examples'
     };
 
-    internals.client = new Catbox.Client(require('../'), options);      // Replace require('../') with 'catbox-mongodb' in your own code
-    internals.client.start(callback);
+    internals.client = new Catbox.Client(require('../'), options);    // Replace require('../') with 'catbox-mongodb' in your own code
+    await internals.client.start();
 };
 
 
-internals.startServer = function () {
+internals.startServer = () => {
 
     const server = Http.createServer(internals.handler);
     server.listen(8080);
     console.log('Server started at http://localhost:8080/');
 };
 
+internals.start = async () => {
 
-internals.startCache(internals.startServer);
+    await internals.startCache();
+    internals.startServer();
+};
+
+internals.start();
