@@ -5,7 +5,8 @@
   "author": "Eran Hammer <eran@hammer.io> (http://hueniverse.com)",
   "contributors": [
     "Wyatt Preul <wpreul@gmail.com> (http://jsgeek.com)",
-    "Marcus Poehls <marcus@futurestud.io> (https://futurestud.io)"
+    "Marcus Poehls <marcus@futurestud.io> (https://futurestud.io)",
+    "Jarda Kotesovec <jarda.kotesovec@gmail.com>"
   ],
   "repository": "git://github.com/hapijs/catbox-mongodb",
   "main": "lib/index.js",
