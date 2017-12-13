@@ -46,7 +46,7 @@ const server = new Hapi.Server({
     cache : [{
         name      : 'mongoDbCache',
         engine    : CatboxMongoDB,
-        uri       : 'your-mongodb-uri' // Defaults to 'mongodb://127.0.0.1:27017/?maxPoolSize=5' if not provided
+        uri       : 'your-mongodb-uri', // Defaults to 'mongodb://127.0.0.1:27017/?maxPoolSize=5' if not provided
         partition : 'cache'
     }]
 });
