@@ -3,7 +3,7 @@ catbox-mongodb
 
 MongoDB adapter for catbox
 
-[![Build Status](https://secure.travis-ci.org/hapijs/catbox-mongodb.png)](http://travis-ci.org/hapijs/catbox-mongodb)
+[![Build Status](https://travis-ci.org/hapijs/catbox-mongodb.svg)](https://travis-ci.org/hapijs/catbox-mongodb)
 
 Lead Maintainer: [Marcus Poehls](https://github.com/marcuspoehls)
 
