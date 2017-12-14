@@ -4,7 +4,7 @@ catbox-mongodb
 MongoDB adapter for [catbox](https://github.com/hapijs/catbox)
 
 [![Build Status](https://travis-ci.org/hapijs/catbox-mongodb.svg)](https://travis-ci.org/hapijs/catbox-mongodb)
-[![catbox-mongodb](https://img.shields.io/npm/v/catbox-mongodb.svg)](https://github.com/hapijs/catbox-mongodb)
+[![catbox-mongodb](https://img.shields.io/npm/v/catbox-mongodb.svg)](https://www.npmjs.com/package/catbox-mongodb)
 
 Lead Maintainer: [Marcus Poehls](https://github.com/marcuspoehls)
 
