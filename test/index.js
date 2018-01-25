@@ -70,6 +70,18 @@ describe('Mongo', () => {
         expect(result.item).to.equal('123');
     });
 
+    it('gets a falsy value like int 0', async () => {
+
+        const client = new Catbox.Client(Mongo);
+        await client.start();
+
+        const key = { id: 'falsy', segment: 'test' };
+        await client.set(key, 0, 10);
+        const result = await client.get(key);
+
+        expect(result.item).to.equal(0);
+    });
+
     it('sets/gets following JS data types: Object, Array, Number, String, Date, RegExp', async () => {
 
         const client = new Catbox.Client(Mongo);
@@ -82,7 +94,8 @@ describe('Mongo', () => {
             number: 5.85,
             string: 'hapi',
             date: new Date('2014-03-07'),
-            regexp: /[a-zA-Z]+/
+            regexp: /[a-zA-Z]+/,
+            boolean: false
         };
 
         await client.set(key, value, 500);
@@ -721,7 +734,7 @@ describe('Mongo', () => {
             mongo.collections.testerr = {
                 findOne: (item) => {
 
-                    return Promise.resolve({ value: false });
+                    return Promise.resolve({ stored: null });
                 }
             };
 
