@@ -21,8 +21,8 @@ npm install catbox catbox-mongodb
 ## Options
 `catbox-mongodb` accepts the following options:
 
-- `uri` - the [MongoDB URI](https://docs.mongodb.org/v3.0/reference/connection-string/), defaults to `'mongodb://127.0.0.1:27017/?maxPoolSize=5'`
-- `partition` - the MongoDB server database
+- `uri` - the [MongoDB URI](https://docs.mongodb.com/manual/reference/connection-string/), defaults to `'mongodb://127.0.0.1:27017/?maxPoolSize=5'`
+- `partition` - the MongoDB database for cached items
 
 
 ## Usage
