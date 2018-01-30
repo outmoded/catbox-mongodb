@@ -1,12 +1,14 @@
 'use strict';
 
-// After starting this example load http://localhost:8080 and hit refresh, you will notice that it loads the response from cache for the first 5 seconds and then reloads the cache
+// After starting this example load http://localhost:8080
+// hit refresh, you will notice that it loads the response
+// from cache for the first 5 seconds and then reloads the cache
+
 
 // Load modules
 
 const Catbox = require('catbox');
 const Http = require('http');
-
 
 
 // Declare internals
