@@ -12,11 +12,23 @@ Lead Maintainer: [Marcus Poehls](https://github.com/marcuspoehls)
 
 
 ## Installation
+> The lastest `catbox-mongodb` version `4.x` works only with **hapi v17**
+
 Install `catbox-mongodb` via NPM. Remember that `catbox-mongodb` requires its parent module [`catbox`](https://github.com/hapijs/catbox):
 
 ```
 npm install catbox catbox-mongodb
 ```
+
+---
+
+Do you use **hapi v16 or lower**? Install `catbox-mongodb` version `3.x` with a compatible version of `catbox`:
+
+```
+# for hapi v16 (or lower)
+npm install catbox@9 catbox-mongodb@3
+```
+
 
 ## Options
 `catbox-mongodb` accepts the following options:
