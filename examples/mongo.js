@@ -23,7 +23,7 @@ internals.handler = async (req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end(item);
     }
-    catch (ignored) {
+    catch (ignoreErr) {
         res.writeHead(500);
         res.end();
     }
