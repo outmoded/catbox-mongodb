@@ -6,13 +6,11 @@
 
 
 // Load modules
-
 const Catbox = require('catbox');
 const Http = require('http');
 
 
 // Declare internals
-
 const internals = {};
 
 
