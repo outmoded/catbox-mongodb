@@ -139,7 +139,7 @@ describe('Mongo', () => {
         expect(client.isReady()).to.equal(true);
     });
 
-    it('connects successfully after a failed connect attempt', async () => {
+    it('connects successfully after a failed connect attempt', { timeout: 4000 }, async () => {
 
         const options = {
             uri: 'mongodb://wrong-uri',
