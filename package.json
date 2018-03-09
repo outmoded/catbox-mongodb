@@ -21,7 +21,7 @@
   "dependencies": {
     "boom": "7.x.x",
     "hoek": "5.x.x",
-    "mongodb": "2.x.x"
+    "mongodb": "3.x.x"
   },
   "devDependencies": {
     "catbox": "10.x.x",

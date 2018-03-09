@@ -23,22 +23,28 @@ describe('Mongo', () => {
 
     before(async () => {
 
-        const mongoDB = new Mongodb.Db('unit-testing', new Mongodb.Server('127.0.0.1', 27017, { auto_reconnect: false, poolSize: 4 }), { safe: false });
+        const client = await Mongodb.MongoClient.connect('mongodb://localhost:27017/unit-testing', {
+            autoReconnect: false,
+            poolSize: 4
+        });
 
-        const db = await mongoDB.open();
+        const db = client.db();
         await db.dropDatabase();
         await db.addUser('tester', 'secret');
-        await db.close();
+        await client.close();
     });
 
     after(async () => {
 
-        const mongoDB = new Mongodb.Db('unit-testing', new Mongodb.Server('127.0.0.1', 27017, { auto_reconnect: false, poolSize: 4 }), { safe: false });
+        const client = await Mongodb.MongoClient.connect('mongodb://localhost:27017/unit-testing', {
+            autoReconnect: false,
+            poolSize: 4
+        });
 
-        const db = await mongoDB.open();
+        const db = client.db();
         await db.dropDatabase();
         await db.removeUser('tester');
-        await db.close();
+        await client.close();
     });
 
     it('creates a new connection', async () => {
@@ -76,7 +82,7 @@ describe('Mongo', () => {
         await client.start();
 
         const key = { id: 'falsy', segment: 'test' };
-        await client.set(key, 0, 10);
+        await client.set(key, 0, 20);
         const result = await client.get(key);
 
         expect(result.item).to.equal(0);
