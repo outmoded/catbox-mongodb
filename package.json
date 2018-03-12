@@ -1,7 +1,7 @@
 {
   "name": "catbox-mongodb",
   "description": "MongoDB adapter for catbox",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "author": "Eran Hammer <eran@hammer.io> (http://hueniverse.com)",
   "contributors": [
     "Marcus Poehls <marcus@futurestud.io> (https://futurestud.io)",
