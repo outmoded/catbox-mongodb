@@ -1,7 +1,9 @@
 # Changelog
-All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+### Changed
+- destructure `key` parameter for get, set, drop into `{ id, segment }`
 
 
 ## [4.2.0](https://github.com/hapijs/catbox-mongodb/compare/v4.1.0...v4.2.0) - 2018-03-12
