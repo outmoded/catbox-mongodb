@@ -1,9 +1,13 @@
 # Changelog
 
-## [Unreleased]
+## [4.2.1](https://github.com/hapijs/catbox-mongodb/compare/v4.2.0...v4.2.1) - 2018-11-01
 
 ### Changed
 - destructure `key` parameter for get, set, drop into `{ id, segment }`
+- fix deprecation warnings by updating to the latest implementation of MongoDB driver methods
+- Run tests on Node.js v11 (travis)
+- bump dependencies
+- clean up `.gitignore`
 
 
 ## [4.2.0](https://github.com/hapijs/catbox-mongodb/compare/v4.1.0...v4.2.0) - 2018-03-12
