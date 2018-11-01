@@ -25,12 +25,15 @@ describe('Mongo', () => {
 
         const client = await Mongodb.MongoClient.connect('mongodb://localhost:27017/unit-testing', {
             autoReconnect: false,
-            poolSize: 4
+            poolSize: 4,
+            useNewUrlParser: true
         });
 
         const db = client.db();
         await db.dropDatabase();
-        await db.addUser('tester', 'secret');
+        await db.addUser('tester', 'secret', {
+            roles: ['dbAdmin']
+        });
         await client.close();
     });
 
@@ -38,7 +41,8 @@ describe('Mongo', () => {
 
         const client = await Mongodb.MongoClient.connect('mongodb://localhost:27017/unit-testing', {
             autoReconnect: false,
-            poolSize: 4
+            poolSize: 4,
+            useNewUrlParser: true
         });
 
         const db = client.db();
@@ -162,7 +166,7 @@ describe('Mongo', () => {
             expect(err.message).to.include('getaddrinfo ENOTFOUND wrong-uri');
         }
 
-        client.settings.uri = 'mongodb://127.0.0.1:27017/?maxPoolSize=5';
+        client.settings.uri = 'mongodb://127.0.0.1:27017/unit-testing?maxPoolSize=5';
         await client.start();
         expect(client.isReady()).to.equal(true);
     });
@@ -845,7 +849,7 @@ describe('Mongo', () => {
             mongo.getCollection = (item) => {
 
                 return Promise.resolve({
-                    update: (criteria, record, options2) => {
+                    updateOne: (criteria, record, options2) => {
 
                         return Promise.reject(new Error('test'));
                     }
@@ -923,7 +927,7 @@ describe('Mongo', () => {
             mongo.getCollection = (item) => {
 
                 return Promise.resolve({
-                    remove: (criteria, safe) => {
+                    deleteOne: (criteria, safe) => {
 
                         return Promise.reject(new Error('test'));
                     }
