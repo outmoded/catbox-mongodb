@@ -44,7 +44,7 @@ Sample catbox cache initialization :
 const Catbox = require('catbox');
 
 const cache = new Catbox.Client(require('catbox-mongodb'), {
-    uri      : 'your-mongodb-uri', // Defaults to 'mongodb://127.0.0.1:27017/?maxPoolSize=5'
+    uri: 'your-mongodb-uri', // Defaults to 'mongodb://127.0.0.1:27017/?maxPoolSize=5'
     partition: 'cache-users'
 })
 ```
@@ -56,10 +56,10 @@ const Hapi = require('hapi')
 
 const server = new Hapi.Server({
     cache : [{
-        name      : 'mongodb-cache',
-        engine    : require('catbox-mongodb'),
-        uri       : 'your-mongodb-uri', // Defaults to 'mongodb://127.0.0.1:27017/?maxPoolSize=5'
-        partition : 'cache-posts'
+        name: 'mongodb-cache',
+        engine: require('catbox-mongodb'),
+        uri: 'your-mongodb-uri', // Defaults to 'mongodb://127.0.0.1:27017/?maxPoolSize=5'
+        partition: 'cache-posts'
     }]
 });
 ```
