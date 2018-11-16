@@ -4,6 +4,7 @@
 
 ### Updated
 - bump to lab 18
+- readme refinements: rephrase, minor update to code snippets
 
 
 ## [4.2.1](https://github.com/hapijs/catbox-mongodb/compare/v4.2.0...v4.2.1) - 2018-11-01
