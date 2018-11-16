@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.2](https://github.com/hapijs/catbox-mongodb/compare/v4.2.1...v4.2.2) - 2018-xx-xx
+
+### Updated
+- bump to lab 18
+
+
 ## [4.2.1](https://github.com/hapijs/catbox-mongodb/compare/v4.2.0...v4.2.1) - 2018-11-01
 
 ### Changed
