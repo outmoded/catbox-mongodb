@@ -12,7 +12,7 @@ Lead Maintainer: [Marcus Poehls](https://github.com/marcuspoehls)
 
 
 ## Installation
-> The lastest `catbox-mongodb` version `4.x` works only with **hapi v17**
+> The lastest `catbox-mongodb` version `4.x` works only with **hapi v17 and v18**
 
 Install `catbox-mongodb` via NPM. Remember that `catbox-mongodb` requires its parent module [`catbox`](https://github.com/hapijs/catbox):
 
@@ -60,6 +60,26 @@ const server = new Hapi.Server({
         engine: require('catbox-mongodb'),
         uri: 'your-mongodb-uri', // Defaults to 'mongodb://127.0.0.1:27017/?maxPoolSize=5'
         partition: 'cache-posts'
+    }]
+});
+```
+
+(For hapi `v18` you need a slightly different config)
+
+```js
+const Hapi = require('hapi')
+const CatboxMongoDB = require('catbox-mongodb')
+ 
+const server = new Hapi.Server({
+    cache : [{
+        name: 'mongoDbCache',
+        provider: {
+          constructor: CatboxMongoDB,
+          options: {
+            uri       : 'your-mongodb-uri', // Defaults to 'mongodb://127.0.0.1:27017/?maxPoolSize=5' if not provided
+            partition : 'cache'
+          }
+        }
     }]
 });
 ```
