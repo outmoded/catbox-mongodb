@@ -64,19 +64,18 @@ const server = new Hapi.Server({
 });
 ```
 
-(For hapi `v18` you need a slightly different config)
+For hapi `v18` you need a slightly different config:
 
 ```js
 const Hapi = require('hapi')
-const CatboxMongoDB = require('catbox-mongodb')
  
 const server = new Hapi.Server({
     cache : [{
-        name: 'mongoDbCache',
+        name: 'mongodb-cache',
         provider: {
-          constructor: CatboxMongoDB,
+          constructor: require('catbox-mongodb'),
           options: {
-            uri       : 'your-mongodb-uri', // Defaults to 'mongodb://127.0.0.1:27017/?maxPoolSize=5' if not provided
+            uri       : 'your-mongodb-uri', // Defaults to 'mongodb://127.0.0.1:27017/?maxPoolSize=5'
             partition : 'cache'
           }
         }
