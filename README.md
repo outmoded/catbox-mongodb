@@ -1,12 +1,8 @@
-catbox-mongodb
-==============
+# catbox-mongodb
 
 MongoDB adapter for [catbox](https://github.com/hapijs/catbox)
 
-[![Build Status](https://travis-ci.org/hapijs/catbox-mongodb.svg)](https://travis-ci.org/hapijs/catbox-mongodb)
-[![catbox-mongodb](https://img.shields.io/npm/v/catbox-mongodb.svg)](https://www.npmjs.com/package/catbox-mongodb)
-
-Lead Maintainer: [Marcus Poehls](https://github.com/marcuspoehls)
+Note: the module has been deprecated and archived due to low usage. The last publish version is known it work well but that may change in the future as breaking changes of catbox are introduced. If you rely on this module, consider forking it and creating your own alternative (it is very little code). You can also ask to take over and the module will be moved to your personal account to maintain.
 
 **catbox-mongodb** serializes values to BSON using MongoDB driver, therefore following data types are supported for this adapter: Object, Array, Number, String, Date, RegExp.
 
